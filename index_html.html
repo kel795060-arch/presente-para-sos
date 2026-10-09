@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Um cantinho nosso ♡</title>
+<style>
+:root{--pink:#f7a8c8;--hot:#d94f91;--pale:#fff1f7;--ink:#61364d;--cream:#fffafd}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family: "Trebuchet MS",system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at top left,#ffe0ee,transparent 40%),linear-gradient(135deg,#fff7fb,#fce5f0);overflow-x:hidden}
+main{width:min(760px,92vw);margin:36px auto;padding:clamp(18px,4vw,36px);background:#ffffffd9;border:1px solid #fff;border-radius:28px;box-shadow:0 18px 55px #b95d8620;position:relative}
+.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:.72rem;color:#b14d7b;font-weight:800}
+h1,h2{font-family:Georgia,serif;font-weight:600}
+h1{font-size:clamp(2.1rem,7vw,3.5rem);line-height:1.05;margin:.45em 0}
+h2{font-size:clamp(1.5rem,5vw,2.2rem);margin:.35em 0}
+p{line-height:1.65}
+.center{text-align:center}
+.heart{font-size:2.4rem;animation:pulse 1.8s infinite;display:inline-block}
+@keyframes pulse{50%{transform:scale(1.12)}}
+button{border:0;border-radius:999px;background:var(--hot);color:white;padding:13px 21px;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 7px 18px #d94f9133;transition:transform .15s}
+button:hover{transform:translateY(-2px)}
+button.secondary{background:#f9e0ec;color:#984267;box-shadow:none}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #b94d83;outline-offset:3px}
+.actions{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:24px}
+.progress{height:8px;background:#f8dce9;border-radius:9px;overflow:hidden;margin:20px 0}
+.progress>div{height:100%;background:linear-gradient(90deg,#f5a4c7,#d94f91);width:0;transition:width .25s}
+.tag{display:inline-block;background:#ffedf5;color:#a83e72;padding:6px 11px;border-radius:99px;font-size:.82rem;font-weight:800}
+.question{padding:16px;margin:14px 0;border:1px solid #f5d7e5;background:#fffafd;border-radius:18px}
+.question p{font-weight:750;margin:0 0 12px}
+.option{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid #f1d6e3;border-radius:12px;margin:8px 0;cursor:pointer;font-weight:500}
+.option:has(input:checked){background:#ffedf5;border-color:#d94f91}
+input[type=radio]{accent-color:#d94f91;margin-top:4px}
+textarea{width:100%;min-height:78px;resize:vertical;border:1px solid #edc9da;border-radius:12px;padding:12px;font:inherit;color:var(--ink);background:white}
+.small{font-size:.9rem;color:#93647b}
+.hidden{display:none!important}
+footer{text-align:center;font-size:.82rem;color:#a7758d;margin-top:24px}
+.floating{position:fixed;pointer-events:none;opacity:.55;animation:float 9s linear infinite;z-index:-1}
+@keyframes float{from{transform:translateY(110vh) rotate(0deg)}to{transform:translateY(-15vh) rotate(35deg)}}
+.letter{background:linear-gradient(135deg,#fff0f7,#fffafc);border:1px dashed #e6a1c1;border-radius:20px;padding:22px;white-space:pre-line}
+@media(max-width:480px){main{margin:14px auto;border-radius:22px}.actions button{flex:1}}
+</style>
+</head>
+<body>
+<div class="floating" style="left:8%;font-size:24px;animation-delay:-2s">♡</div>
+<div class="floating" style="left:84%;font-size:30px;animation-delay:-5s">✿</div>
+<main>
+<section id="welcome" class="center">
+  <div class="heart">♡</div>
+  <div class="eyebrow">um presente feito com carinho</div>
+  <h1>Um cantinho<br>nosso</h1>
+  <p>Oi, meu amorzinho! 💗<br>Preparei umas perguntinhas, algumas lembranças e um pouquinho do meu coração pra você.</p>
+  <p class="small">São 10 perguntinhas sobre nós, com lembranças, jogos e umas palhaçadas. Vai no seu tempo, tá?</p>
+  <button onclick="startQuiz()">Começar nosso quiz ♡</button>
+</section>
+
+<section id="quiz" class="hidden">
+  <div class="eyebrow">feito especialmente pra você ♡</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <h2 id="stageTitle">Etapa 1</h2><span class="tag" id="stageCount">1 de 10</span>
+  </div>
+  <div class="progress"><div id="progressFill"></div></div>
+  <p id="stageIntro"></p>
+  <div id="questions"></div>
+  <div class="actions">
+    <button class="secondary" id="backBtn" onclick="move(-1)">← Voltar</button>
+    <button id="nextBtn" onclick="move(1)">Próxima etapa ♡ →</button>
+  </div>
+  <p class="small">P.S.: não existe resposta perfeita. O importante é a gente se divertir juntinhos. 💕</p>
+</section>
+
+<section id="finish" class="hidden center">
+  <div class="heart">💗</div>
+  <div class="eyebrow">fim do quiz, começo de mais lembranças</div>
+  <h1>Você é meu lugar favorito.</h1>
+  <p>Obrigado por entrar nesse cantinho que eu fiz pensando em você, MB. Entre jogos, praia, música, sushi, maracujá e nossas histórias aleatórias, minha parte favorita continua sendo ter você comigo.</p>
+  <div class="letter" id="letterText">Meu amor,
+
+Se eu pudesse escolher de novo, ainda escolheria conhecer você. Obrigado por cada risada, cada conversa, cada carinho e até pelas nossas maluquices.
+
+Espero continuar criando memórias lindas com você, uma por uma. Você é muito especial pra mim, mais do que cabe nessas palavras.
+
+Com todo o meu amor,
+seu namorado ♡</div>
+  <p class="small">As respostas ficam só nesta página e não são enviadas pra mim. Se você quiser guardar alguma, tire um print antes de fechar. ♡</p>
+  <button onclick="showAnswers()">Ver minhas respostas</button>
+  <div id="answersReview" class="hidden" style="text-align:left;margin-top:18px"></div>
+  <footer>feito com amor, coraçõezinhos e um tantinho de vergonha ♡</footer>
+</section>
+</main>
+<script>
+const stages = [
+ {title:"Como tudo começou",intro:"Tudo começou na escola, do jeito mais aleatório possível. 💗",qs:[
+  ["choice","Onde começou a nossa história?",["Na escola, do nada KKKK","Num encontro superplanejado","Num jogo online","O universo decidiu e pronto"]],
+  ["text","Qual foi sua primeira impressão de mim?"],
+  ["choice","Como você me chama mesmo, praga?",["Amor","Bebê","Nenê","Praga (essa é a minha favorita KKKK)"]],
+  ["text","Qual lembrança do começo da gente você guardaria numa caixinha?"]
+ ]},
+ {title:"A batalha lendária",intro:"Um acontecimento que entrou para a história do casal. ⚔️",qs:[
+  ["choice","Quem venceu a batalha dos nossos ChatGPTs?",["O ChatGPT da MB 🏆","O ChatGPT da praga (deixa eu sonhar)","Foi empate técnico","Não quero lembrar dessa humilhação"]],
+  ["text","Descreve aquela batalha em poucas palavras KKKKK."],
+  ["choice","Depois daquela derrota, o que o ChatGPT da praga merece?",["Uma revanche","Treinamento intensivo","Um pedido de desculpas público","Aposentadoria imediata 💀"]],
+  ["text","Se essa batalha tivesse um nome de filme, qual seria?"]
+ ]},
+ {title:"A carona da exposição",intro:"Chovia, você precisava de uma carona... e veio uma história pra contar. 🚗🌧️",qs:[
+  ["choice","O que aconteceu naquela carona?",["A mãe dela me deu carona e falou do sedentarismo da MB KKKK","A gente foi parar em outro estado","O carro virou um submarino","Todo mundo ficou em silêncio"]],
+  ["text","Qual foi a parte mais engraçada dessa história pra você?"],
+  ["choice","Qual seria o título desse documentário?",["A Vida Sedentária da MB","Velozes e Curiosos: Edição Chuva","A Carona da Verdade","A Mãe Não Perdoa KKKK"]],
+  ["text","De 0 a 10, quanto essa história merece entrar no museu do casal? E por quê?"]
+ ]},
+ {title:"Gamer girl 🎮",intro:"Agora vamos falar de uma das coisas que ela mais ama: jogos!",qs:[
+  ["choice","Qual jogo é um dos favoritos da MB?",["Life is Strange 2","Um simulador de lavar louça","Jogo da cobrinha","Planilha Simulator"]],
+  ["choice","Qual outra franquia ela ama?",["Tomb Raider","FIFA Manager de batata","Jogo de adivinhar imposto","Nenhuma, ela odeia jogos (mentira)"]],
+  ["text","Se a gente pudesse jogar qualquer jogo juntos, qual você escolheria?"],
+  ["choice","Onde a MB provavelmente fica feliz olhando a biblioteca?",["Na Steam","No gerenciador de tarefas","Na calculadora","Na tela de atualização do Windows KKKK"]]
+ ]},
+ {title:"Praia, música e princesa",intro:"O gosto dela vai de tudo a princesas da Disney KKKKK. 🏖️🎧",qs:[
+  ["choice","Qual rolê tem a cara da MB?",["Praia e música","Ficar olhando uma parede branca","Reunião sobre boletos","Só correr na esteira por 12 horas"]],
+  ["choice","Qual estilo musical ela escuta?",["Tudo, inclusive princesas da Disney","Só um único gênero para sempre","Apenas barulho de modem","Só trilha sonora de elevador"]],
+  ["text","Qual música você dedicaria pra ela? Pode escolher depois, sem pressão. ♡"],
+  ["text","Se vocês passassem um dia na praia, como seria o dia perfeito?"]
+ ]},
+ {title:"O cardápio da MB",intro:"Se tiver maracujá ou sushi, já temos uma pista. 🍣",qs:[
+  ["choice","Qual comida ela ama?",["Sushi","Sopa de parafuso","Pedra empanada","Arroz com pilha AA"]],
+  ["choice","Qual sabor/fruta deixa a MB feliz?",["Maracujá","Pasta de dente","Gelo sem água","Papelão sabor vento"]],
+  ["text","Qual comida você levaria pra um encontro surpresa com ela?"],
+  ["choice","O encontro perfeito inclui...",["Sushi, algo de maracujá e ela","Uma apresentação de PowerPoint sobre batatas","Só água morna","Uma prova surpresa de matemática"]]
+ ]},
+ {title:"Romeo e a Gorda 🐶",intro:"Os membros peludos e importantíssimos da família também entram no site!",qs:[
+  ["choice","Quais são os doguinhos dela?",["Romeo e a Gorda","Mario e Luigi","Sean e Daniel","Leon e Lara"]],
+  ["text","Conta uma coisa engraçada que o Romeo ou a Gorda fazem."],
+  ["choice","Quem merece um carinho extra?",["Romeo","A Gorda","Os dois, sem favoritismo","Eu também quero carinho 😔"]],
+  ["text","Se os cachorros pudessem escrever uma mensagem pra MB, o que diriam?"]
+ ]},
+ {title:"O universo dela",intro:"Avatar, Tartarugas Ninja e muito mais. 🐢✨",qs:[
+  ["choice","Qual dessas referências ela ama?",["Tartarugas Ninja","Só filmes de contabilidade","Documentários de parede","Nenhuma das opções"]],
+  ["choice","Qual paleta combina com ela?",["Vinho escuro","Amarelo marca-texto em tudo","Cinza de planilha","Verde de semáforo"]],
+  ["text","Qual personagem de Avatar ou das Tartarugas Ninja combina com ela, na sua opinião?"],
+  ["text","Qual referência ou piada nossa não pode faltar no site?"]
+ ]},
+ {title:"Coisas que amo em você",intro:"Essa parte é pra lembrar que ela é especial do jeitinho dela. 💌",qs:[
+  ["choice","O que faz alguém ser especial?",["O jeito de ser","O carinho que oferece","As manias e detalhes únicos","Tudo isso junto"]],
+  ["text","Escreve três coisas que você mais ama nela."],
+  ["choice","Qual apelido combina com um momento fofo?",["MB","Amor","Bebê ou nenê","Todos, depende do momento ♡"]],
+  ["text","Qual é uma coisinha que ela faz e sempre melhora seu dia?"]
+ ]},
+ {title:"Nós dois, daqui pra frente",intro:"Última etapa, praga. Hora de fechar com carinho. ❤️",qs:[
+  ["choice","Qual aventura vocês deviam viver juntos?",["Uma viagem pra praia","Uma maratona de jogos","Um rolê de sushi e sobremesa de maracujá","Todas as anteriores, por favor"]],
+  ["text","Qual é uma coisa que você gostaria de viver com ela no futuro?"],
+  ["choice","Qual é a mistura que mais define vocês?",["Romance e palhaçada","Jogos e carinho","Piadas internas e memórias","Tudo isso, com a batalha dos ChatGPTs no currículo"]],
+  ["text","Deixa uma mensagem pra MB guardar no coração. ♡"]
+ ]}
+];
+let current=0;
+const answers={};
+function startQuiz(){document.getElementById('welcome').classList.add('hidden');document.getElementById('quiz').classList.remove('hidden');renderStage()}
+function renderStage(){
+ const s=stages[current];
+ document.getElementById('stageTitle').textContent=s.title;
+ document.getElementById('stageCount').textContent=`${current+1} de ${stages.length}`;
+ document.getElementById('stageIntro').textContent=s.intro;
+ document.getElementById('progressFill').style.width=`${((current+1)/stages.length)*100}%`;
+ document.getElementById('backBtn').style.visibility=current===0?'hidden':'visible';
+ document.getElementById('nextBtn').textContent=current===stages.length-1?'Terminar e abrir a cartinha ♡':'Próxima etapa ♡ →';
+ const wrap=document.getElementById('questions');wrap.innerHTML='';
+ s.qs.forEach((q,i)=>{
+  const id=`s${current}q${i}`, card=document.createElement('div');card.className='question';
+  const label=document.createElement('p');label.textContent=`${i+1}. ${q[1]}`;card.appendChild(label);
+  if(q[0]==='choice'){
+   q[2].forEach((opt,j)=>{const lab=document.createElement('label');lab.className='option';const inp=document.createElement('input');inp.type='radio';inp.name=id;inp.value=opt;if(answers[id]===opt)inp.checked=true;inp.addEventListener('change',()=>answers[id]=opt);lab.append(inp,document.createTextNode(opt));card.appendChild(lab)});
+  }else{
+   const area=document.createElement('textarea');area.placeholder='Escreve aqui com carinho...';area.value=answers[id]||'';area.addEventListener('input',()=>answers[id]=area.value);card.appendChild(area);
+  }
+  wrap.appendChild(card);
+ });
+}
+function move(dir){current+=dir;if(current<0)current=0;if(current>=stages.length){document.getElementById('quiz').classList.add('hidden');document.getElementById('finish').classList.remove('hidden');return}renderStage();window.scrollTo({top:0,behavior:'smooth'})}
+function showAnswers(){
+ const box=document.getElementById('answersReview');box.classList.toggle('hidden');
+ if(box.classList.contains('hidden'))return;
+ box.innerHTML='<h2>Suas respostas ♡</h2>';
+ stages.forEach((s,si)=>{const h=document.createElement('h3');h.textContent=s.title;box.appendChild(h);s.qs.forEach((q,qi)=>{const id=`s${si}q${qi}`,p=document.createElement('p');p.textContent=`${qi+1}. ${q[1]} — ${answers[id]||'(não respondida)'}`;box.appendChild(p)})});
+}
+</script>
+</body>
+</html>
